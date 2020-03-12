@@ -13,25 +13,35 @@ class PokeApiStore = _PokeApiStoreBase with _$PokeApiStore;
 abstract class _PokeApiStoreBase with Store {
   @observable
   PokeAPI _pokeAPI;
-  
+
+  @observable
+  Pokemon _pokemonAtual;
+
   @computed
   PokeAPI get pokeAPI => _pokeAPI;
 
   @action
-  getPokemon({int index}){
+  getPokemon({int index}) {
     return _pokeAPI.pokemon[index];
   }
 
   @action
-  fetchPokemonList(){
+  setPokemonAtual({int index}) {
+    _pokemonAtual = _pokeAPI.pokemon[index];
+  }
+
+  @action
+  Pokemon get getPokemonAtual{
+    return _pokemonAtual;
+  }
+
+  @action
+  fetchPokemonList() {
     _pokeAPI = null;
-    loadPokeAPI().then((pokeList){
+    loadPokeAPI().then((pokeList) {
       _pokeAPI = pokeList;
     });
   }
-  
-  
-
 
   Future<PokeAPI> loadPokeAPI() async {
     try {
@@ -45,12 +55,18 @@ abstract class _PokeApiStoreBase with Store {
   }
 
   @action
-  Widget getImage({String numero}){
-    return CachedNetworkImage(
-      placeholder: (context, url) => new Container(
-        color: Colors.transparent,
+  Widget getImage({String numero}) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: CachedNetworkImage(
+        height: 110,
+        width: 110,
+        placeholder: (context, url) => new Container(
+          child: CircularProgressIndicator(),
+        ),
+        imageUrl:
+            'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$numero.png',
       ),
-      imageUrl: 'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$numero.png',
     );
   }
 }
