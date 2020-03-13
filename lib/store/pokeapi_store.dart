@@ -11,14 +11,32 @@ part 'pokeapi_store.g.dart';
 class PokeApiStore = _PokeApiStoreBase with _$PokeApiStore;
 
 abstract class _PokeApiStoreBase with Store {
+  
   @observable
-  PokeAPI _pokeAPI;
+  PokeAPI _pokeAPI; 
 
   @observable
-  Pokemon _pokemonAtual;
+  Pokemon _pokemonAtual; 
 
-  @computed
+  @observable
+  dynamic corPokemon;
+
+  @observable
+  int posicaoAtual;
+
+  @computed 
   PokeAPI get pokeAPI => _pokeAPI;
+
+  @computed 
+  Pokemon get pokemonAtual => _pokemonAtual;
+
+  @action
+  fetchPokemonList() {
+    _pokeAPI = null;
+    loadPokeAPI().then((pokeList) {
+      _pokeAPI = pokeList;
+    });
+  }
 
   @action
   getPokemon({int index}) {
@@ -28,19 +46,8 @@ abstract class _PokeApiStoreBase with Store {
   @action
   setPokemonAtual({int index}) {
     _pokemonAtual = _pokeAPI.pokemon[index];
-  }
-
-  @action
-  Pokemon get getPokemonAtual{
-    return _pokemonAtual;
-  }
-
-  @action
-  fetchPokemonList() {
-    _pokeAPI = null;
-    loadPokeAPI().then((pokeList) {
-      _pokeAPI = pokeList;
-    });
+    corPokemon = ConstsAPI.getColorType(type: _pokemonAtual.type[0]);
+    posicaoAtual = index;
   }
 
   Future<PokeAPI> loadPokeAPI() async {
