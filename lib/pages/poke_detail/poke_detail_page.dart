@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pokedex/consts/consts_app.dart';
 import 'package:pokedex/models/pokeapi.dart';
+import 'package:pokedex/pages/home_page/widgets/brandSelector.dart';
 import 'package:pokedex/store/pokeapi_store.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations/simple_animations/multi_track_tween.dart';
@@ -70,109 +71,8 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
       ),
       body: Stack(
         children: <Widget>[
-          Observer(
-            builder: (context) {
-              return Hero(
-                tag: _pokemonStore.corPokemon,
-                child: Container(
-                  color: _pokemonStore.corPokemon,
-                ),
-              );
-            },
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height / 3,
-            child: Padding(
-              padding: EdgeInsets.only(left: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          _pokemon.name,
-                          style: TextStyle(
-                              fontSize: 35,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        // color: Colors.black,
-                        padding: EdgeInsets.only(right: 15),
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          "#${_pokemon.num}",
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsetsDirectional.only(top: 20),
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Color.fromARGB(80, 255, 255, 255)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Text(_pokemon.type[0],
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[100])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Color.fromARGB(80, 255, 255, 255)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: IconButton(
-                              color: Colors.white, 
-                              icon: Icon(Icons.arrow_back_ios),
-                              onPressed: (){
-                                //mudar poke
-                                print("deu certo");
-                              },
-                            ),
-                          ),
-                        ),  
-                        //Icons.arrow_back_ios
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Color.fromARGB(80, 255, 255, 255)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: IconButton(
-                              color: Colors.white, 
-                              icon: Icon(Icons.arrow_forward_ios),
-                              onPressed: (){
-                                //mudar poke
-                                print("deu certo");
-                              },
-                            ),
-                          ),
-                        ),                    
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          constroiFundoImage(),
+          constroiWidgetImage(),
           SlidingSheet(
             listener: (state) {
               setState(() {
@@ -193,7 +93,42 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
             builder: (context, state) {
               return Container(
                 height: MediaQuery.of(context).size.height,
-                child: Center(child: Text('aaaaaa')),
+                color: Colors.grey[200],
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    BrandSelector(brands: ["Sobre", "Evolução", "Status"]),
+                    Container(
+                      margin: EdgeInsets.only(left: 15, right: 15),
+                      alignment: Alignment.bottomLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Text("Descrição",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold 
+                          ),
+                          ),
+                          Text("Procurar a url que tiro a descrição"),
+                          Text("Biologia",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold 
+                          ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Espécie"),
+                              Text("${_pokemonStore.pokemonAtual.type[0]} Pokémon"),
+                            ],
+                            ),
+                        ],
+                      )
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -239,7 +174,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                         Observer(builder: (context) {
                           return AnimatedPadding(
                               child: Hero(
-                                tag: _pokeitem.name,
+                                tag: _pokemonStore.pokemonAtual.name,
                                 child: CachedNetworkImage(
                                   height: 160,
                                   width: 160,
@@ -263,7 +198,6 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                         }),
                       ],
                     );
-                    // return _pokemonStrore.getImage(numero: pokemon.num);
                   },
                 ),
               ),
@@ -271,6 +205,19 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget constroiFundoImage() {
+    return Observer(
+      builder: (context) {
+        return Hero(
+          tag: _pokemonStore.corPokemon,
+          child: Container(
+            color: _pokemonStore.corPokemon,
+          ),
+        );
+      },
     );
   }
 
@@ -323,6 +270,106 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget constroiWidgetImage() {
+    return Observer(
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height / 3,
+          child: Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        _pokemonStore.pokemonAtual.name,
+                        style: TextStyle(
+                            fontSize: 35,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      // color: Colors.black,
+                      padding: EdgeInsets.only(right: 15),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "#${_pokemonStore.pokemonAtual.num}",
+                        style: TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsetsDirectional.only(top: 20),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color.fromARGB(80, 255, 255, 255)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Text(_pokemonStore.pokemonAtual.type[0],
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[100])),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Color.fromARGB(80, 255, 255, 255)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            color: Colors.white,
+                            icon: Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              //mudar poke
+                              print("deu certo");
+                            },
+                          ),
+                        ),
+                      ),
+                      //Icons.arrow_back_ios
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Color.fromARGB(80, 255, 255, 255)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            color: Colors.white,
+                            icon: Icon(Icons.arrow_forward_ios),
+                            onPressed: () {
+                              //mudar poke
+                              print("deu certo");
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
