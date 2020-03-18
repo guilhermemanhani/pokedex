@@ -88,9 +88,9 @@ class _HomePageState extends State<HomePage> {
                                             types: pokemon.type,
                                             index: index,
                                             nome: pokemon.name,
-                                  
-                                            image: _pokemonStore.getImage(
-                                                numero: pokemon.num),
+                                            num: pokemon.num,                                  
+                                            // image: _pokemonStore.getImage(
+                                            //     numero: pokemon.num),
                                           ),
                                           // ),
                                           onTap: () {
