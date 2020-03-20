@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:pokedex/store/pokeapi_store.dart';
+// import 'package:get_it/get_it.dart';
+// import 'package:pokedex/store/pokeapi_store.dart';
 
 class BrandSelector extends StatefulWidget {
   final List<String> brands;
@@ -12,13 +12,13 @@ class BrandSelector extends StatefulWidget {
 class _BrandSelectorState extends State<BrandSelector>{
   int _indexOption = 0;
   bool _isSelected;
-  PokeApiStore _pokeApiStore;
+  // PokeApiStore _pokeApiStore;
   
 
   @override
   void initState(){
     super.initState();
-    _pokeApiStore = GetIt.instance<PokeApiStore>();
+    // _pokeApiStore = GetIt.instance<PokeApiStore>();
   }
 
   @override

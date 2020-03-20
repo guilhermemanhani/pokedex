@@ -394,7 +394,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 8.0), 
           child: Text(
             "A perennial favorite of children everywhere, "
             "the taste of a good chocolate chip cookie can't be overstated. Whereas "
